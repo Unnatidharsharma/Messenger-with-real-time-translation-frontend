@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
 import Profile from "./Profile/Profile";
@@ -88,15 +88,15 @@ function HomePage() {
   };
 
   // Callback to handle received messages from WebSocket
-  const onMessageReceive = (payload) => {
+  const onMessageReceive = useCallback((payload) => {
     const receivedMessage = JSON.parse(payload.body);
     setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-  };
+  }, []);
 
   // Effect to establish a WebSocket connection
   useEffect(() => {
     connect();
-  }, []);
+  }, [connect]);
 
   // Effect to subscribe to a chat when connected
   useEffect(() => {
